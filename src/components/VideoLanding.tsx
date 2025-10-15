@@ -157,7 +157,7 @@ const VideoLanding: React.FC = () => {
             lineHeight: '1.2',
             wordSpacing: '0.1em'
           }}>
-            ZON builds AI that makes AI better - NETLIFY TEST
+            ZON builds AI that makes AI better
           </h1>
 
           {/* Logo - FIXED POSITION */}
