@@ -38,6 +38,18 @@ const VideoLanding: React.FC = () => {
     return 'initial';
   });
   
+  // Separate state for video source to force re-render
+  const [videoSource, setVideoSource] = useState(() => {
+    const isDirectNavigation = sessionStorage.getItem('isDirectNavigation') === 'true';
+    const hasBeenHereBefore = sessionStorage.getItem('hasVisitedHome') === 'true';
+    const hasVideoPlayedOnce = sessionStorage.getItem('hasVideoPlayedOnce') === 'true';
+    
+    if (isDirectNavigation && hasBeenHereBefore && hasVideoPlayedOnce) {
+      return heroVideoShort;
+    }
+    return heroVideo;
+  });
+  
   const [isNavigationReturn, setIsNavigationReturn] = useState(() => {
     const isDirectNavigation = sessionStorage.getItem('isDirectNavigation') === 'true';
     const hasBeenHereBefore = sessionStorage.getItem('hasVisitedHome') === 'true';
@@ -93,8 +105,12 @@ const VideoLanding: React.FC = () => {
         // For initial visits, start playing from the beginning
         console.log('Initial visit - starting video playback');
         video.play().catch(console.error);
+      } else if (playbackMode === 'replay') {
+        // For replay mode, start playing immediately
+        console.log('Replay mode - starting video playback');
+        video.currentTime = 0;
+        video.play().catch(console.error);
       }
-      // For replay mode, don't auto-play - let the replay button handle it
     };
 
     const handlePlay = () => {
@@ -162,8 +178,9 @@ const VideoLanding: React.FC = () => {
     <div className="relative min-h-screen w-full overflow-hidden bg-black">
       {/* Video Background - MOBILE OPTIMIZED */}
       <video
+        key={videoSource} // Force re-render when video source changes
         ref={videoRef}
-        src={playbackMode === 'navigation-return' ? heroVideoShort : heroVideo}
+        src={videoSource}
         autoPlay={false}
         muted
         playsInline
@@ -171,7 +188,13 @@ const VideoLanding: React.FC = () => {
         controls={false}
         loop={false}
         onLoadStart={() => {
-          console.log('Video loading with src:', playbackMode === 'navigation-return' ? 'SHORT VIDEO' : 'FULL VIDEO');
+          console.log('Video loading with src:', videoSource === heroVideoShort ? 'SHORT VIDEO' : 'FULL VIDEO');
+        }}
+        onLoadedData={() => {
+          console.log('Video loaded successfully, playbackMode:', playbackMode);
+        }}
+        onError={(e) => {
+          console.error('Video error:', e);
         }}
         className="absolute inset-0 w-full h-full object-cover"
         style={{
@@ -295,19 +318,17 @@ const VideoLanding: React.FC = () => {
           <div className="absolute top-20 left-6">
             <button 
               onClick={() => {
-                const video = videoRef.current;
-                if (video) {
-                  // Immediately hide text with no transition
-                  setShowContent(false);
-                  setHasVideoEnded(false);
-                  setShowNavigation(false);
-                  setPlaybackMode('replay');
-                  setIsNavigationReturn(false);
-                  
-                  // Reset video and play
-                  video.currentTime = 0;
-                  video.play();
-                }
+                console.log('Replay button clicked - replaying original full video');
+                
+                // Immediately hide text with no transition
+                setShowContent(false);
+                setHasVideoEnded(false);
+                setShowNavigation(false);
+                setPlaybackMode('replay');
+                setIsNavigationReturn(false);
+                
+                // Always replay the original full video
+                setVideoSource(heroVideo);
               }}
               className="bg-white/20 backdrop-blur-lg text-white px-4 py-2 md:px-6 md:py-3 rounded-full font-semibold hover:bg-white/30 transition-all duration-300 flex items-center gap-2 animate-pulse-glow animate-gentle-bounce text-sm md:text-base"
             >
