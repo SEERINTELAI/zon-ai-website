@@ -28,7 +28,7 @@ const VideoLanding: React.FC = () => {
       const video = videoRef.current;
       if (video) {
         video.addEventListener('loadedmetadata', () => {
-          video.currentTime = video.duration * 0.75;
+          video.currentTime = video.duration * 0.75; // Return visit starts at 75%
         });
       }
       
