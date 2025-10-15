@@ -18,18 +18,42 @@ const VideoLanding: React.FC = () => {
   useEffect(() => {
     const hasVisited = sessionStorage.getItem('hasVisitedHome');
     const isDirectNavigation = sessionStorage.getItem('isDirectNavigation');
+    const returnVisitFlag = sessionStorage.getItem('returnVisit');
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlReturnVisit = urlParams.get('return');
     
-    console.log('🔍 Session check:', { hasVisited, isDirectNavigation });
+    console.log('🔍 Session check:', { hasVisited, isDirectNavigation, returnVisitFlag, urlReturnVisit });
+    console.log('🔍 Current URL:', window.location.href);
+    console.log('🔍 Referrer:', document.referrer);
+    console.log('🔍 All sessionStorage:', Object.keys(sessionStorage).reduce((acc, key) => {
+      acc[key] = sessionStorage.getItem(key);
+      return acc;
+    }, {} as Record<string, string | null>));
     
-    if (hasVisited && isDirectNavigation) {
+    // More robust return visit detection with multiple fallbacks
+    const isReturnVisit = hasVisited && (isDirectNavigation || returnVisitFlag || urlReturnVisit === 'true');
+    
+    if (isReturnVisit) {
       // This is a return visit - show content immediately and start video at last 4 seconds
       console.log('🎯 RETURN VISIT DETECTED - Starting video at last 4 seconds');
       setIsReturnVisit(true);
       setShowContent(true);
       setShowNavigation(true);
       setIsVideoLoaded(true);
+      
+      // Clear the return visit flags after using them
+      sessionStorage.removeItem('returnVisit');
+      sessionStorage.removeItem('isDirectNavigation');
+      
+      // Clean up URL parameter
+      if (urlReturnVisit) {
+        const newUrl = new URL(window.location.href);
+        newUrl.searchParams.delete('return');
+        window.history.replaceState({}, '', newUrl.toString());
+      }
     } else {
       // First visit - normal behavior
+      console.log('🆕 FIRST VISIT - Normal video behavior');
       const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
       
       if (isMobile) {
@@ -50,8 +74,6 @@ const VideoLanding: React.FC = () => {
     
     // Mark that we've visited home
     sessionStorage.setItem('hasVisitedHome', 'true');
-    // Clear the direct navigation flag AFTER we've used it
-    sessionStorage.removeItem('isDirectNavigation');
   }, []);
 
   // Video handling with return visit support

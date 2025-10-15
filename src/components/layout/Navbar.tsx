@@ -57,18 +57,20 @@ export const Navbar: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-center h-16 relative">
           {/* Logo - Left */}
-          <Link to="/" onClick={() => {
+          <Link to="/?return=true" onClick={() => {
             console.log('🏠 Logo clicked - setting return visit flag');
             sessionStorage.setItem('isDirectNavigation', 'true');
+            sessionStorage.setItem('returnVisit', 'true');
           }} className="absolute left-0 flex items-center">
             <img src={logoTransparent} alt="ZON" className="h-8 w-auto" />
           </Link>
 
                  {/* Desktop Navigation - Center */}
                  <div className="hidden md:flex items-center space-x-8">
-                   <Link to="/" onClick={() => {
+                   <Link to="/?return=true" onClick={() => {
                      console.log('🏠 Home link clicked - setting return visit flag');
                      sessionStorage.setItem('isDirectNavigation', 'true');
+                     sessionStorage.setItem('returnVisit', 'true');
                      window.scrollTo({ top: 0, behavior: 'smooth' });
                    }} className="text-white hover:text-gray-300 transition-colors font-medium cursor-pointer">Home</Link>
                    
@@ -158,9 +160,11 @@ export const Navbar: React.FC = () => {
         {isOpen && (
           <div className="md:hidden">
                  <div className="px-2 pt-2 pb-3 space-y-1 bg-black/95 backdrop-blur-lg border-t border-gray-800">
-                   <Link to="/" onClick={() => {
+                   <Link to="/?return=true" onClick={() => {
+                     console.log('🏠 Mobile Home clicked - setting return visit flag');
                      sessionStorage.setItem('isDirectNavigation', 'true');
-                     handleMobileNavClick('/');
+                     sessionStorage.setItem('returnVisit', 'true');
+                     handleMobileNavClick('/?return=true');
                    }} className="block px-3 py-3 text-white hover:text-gray-300 font-medium">Home</Link>
                    
                    {/* Mobile Products Section */}
