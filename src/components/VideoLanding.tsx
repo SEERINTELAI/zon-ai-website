@@ -21,6 +21,7 @@ const VideoLanding: React.FC = () => {
     
     if (hasVisited && isDirectNavigation) {
       // This is a return visit - show content immediately and start video at last 4 seconds
+      console.log('🎯 RETURN VISIT DETECTED - Starting video at last 4 seconds');
       setIsReturnVisit(true);
       setShowContent(true);
       setShowNavigation(true);
