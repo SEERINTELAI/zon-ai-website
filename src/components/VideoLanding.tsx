@@ -38,7 +38,19 @@ const VideoLanding: React.FC = () => {
     }
     
     sessionStorage.setItem('hasVisitedHome', 'true');
-  }, []);
+    
+    // Fallback timeout for mobile - show content after 3 seconds if video doesn't load
+    const fallbackTimeout = setTimeout(() => {
+      if (!isVideoLoaded) {
+        console.log('Fallback timeout - showing content');
+        setShowContent(true);
+        setShowNavigation(true);
+        setIsVideoLoaded(true);
+      }
+    }, 3000);
+    
+    return () => clearTimeout(fallbackTimeout);
+  }, [isVideoLoaded]);
 
   // Handle video timing for animations and end state
   useEffect(() => {
@@ -139,7 +151,7 @@ const VideoLanding: React.FC = () => {
         autoPlay={false}
         muted
         playsInline
-        preload="metadata"
+        preload="auto"
         controls={false}
         loop={false}
         onError={(e) => {
