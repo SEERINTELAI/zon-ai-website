@@ -24,7 +24,7 @@ const VideoLanding: React.FC = () => {
       setIsReturnVisit(true);
       setIsVideoLoaded(true);
       
-      // Start video at 75% through (much shorter)
+      // Start video at 75% through (much shorter) - FORCE DEPLOY
       const video = videoRef.current;
       if (video) {
         video.addEventListener('loadedmetadata', () => {
