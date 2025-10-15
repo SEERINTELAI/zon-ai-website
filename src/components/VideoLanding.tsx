@@ -26,6 +26,8 @@ const VideoLanding: React.FC = () => {
     return isDirectNavigation && hasBeenHereBefore && hasVideoPlayedOnce;
   });
   const [hasVideoEnded, setHasVideoEnded] = useState(false);
+  const [showMobilePlayButton, setShowMobilePlayButton] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   // Initialize state based on session storage immediately
   const [playbackMode, setPlaybackMode] = useState<PlaybackMode>(() => {
     const isDirectNavigation = sessionStorage.getItem('isDirectNavigation') === 'true';
@@ -60,8 +62,13 @@ const VideoLanding: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const location = useLocation();
 
-  // Detect navigation context on component mount
+  // Detect mobile and navigation context on component mount
   useEffect(() => {
+    // Detect mobile device
+    const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
+    const isMobileDevice = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent.toLowerCase());
+    setIsMobile(isMobileDevice);
+    
     const isDirectNavigation = sessionStorage.getItem('isDirectNavigation') === 'true';
     const hasBeenHereBefore = sessionStorage.getItem('hasVisitedHome') === 'true';
     const hasVideoPlayedOnce = sessionStorage.getItem('hasVideoPlayedOnce') === 'true';
@@ -69,7 +76,8 @@ const VideoLanding: React.FC = () => {
     console.log('Navigation detection:', {
       isDirectNavigation,
       hasBeenHereBefore,
-      hasVideoPlayedOnce
+      hasVideoPlayedOnce,
+      isMobileDevice
     });
     
     // Clear the navigation flag immediately
@@ -86,6 +94,23 @@ const VideoLanding: React.FC = () => {
       console.log('Setting playback mode to initial');
       setPlaybackMode('initial');
       sessionStorage.setItem('hasVisitedHome', 'true');
+      
+      // On mobile, show content immediately to prevent loading spinner
+      if (isMobileDevice) {
+        console.log('Mobile device detected - showing content immediately');
+        setShowContent(true);
+        setShowNavigation(true);
+        
+        // Also set a timeout to ensure content shows even if video fails
+        setTimeout(() => {
+          if (!isVideoLoaded) {
+            console.log('Mobile timeout - forcing content to show');
+            setShowContent(true);
+            setShowNavigation(true);
+            setShowMobilePlayButton(true);
+          }
+        }, 3000);
+      }
     }
   }, []);
 
@@ -97,20 +122,41 @@ const VideoLanding: React.FC = () => {
     const handleLoadedData = () => {
       setIsVideoLoaded(true);
       
-      if (playbackMode === 'navigation-return') {
-        // For navigation returns, play the short video from the beginning
-        console.log('Navigation return - playing short video');
-        video.play().catch(console.error);
-      } else if (playbackMode === 'initial') {
-        // For initial visits, start playing from the beginning
-        console.log('Initial visit - starting video playback');
-        video.play().catch(console.error);
-      } else if (playbackMode === 'replay') {
-        // For replay mode, start playing immediately
-        console.log('Replay mode - starting video playback');
-        video.currentTime = 0;
-        video.play().catch(console.error);
-      }
+      // Add a small delay for mobile devices
+      setTimeout(() => {
+        if (playbackMode === 'navigation-return') {
+          // For navigation returns, play the short video from the beginning
+          console.log('Navigation return - playing short video');
+          video.play().catch((error) => {
+            console.log('Video play failed, showing mobile play button:', error);
+            // If autoplay fails, show a play button for mobile
+            setShowMobilePlayButton(true);
+            setShowContent(true);
+            setShowNavigation(true);
+          });
+        } else if (playbackMode === 'initial') {
+          // For initial visits, start playing from the beginning
+          console.log('Initial visit - starting video playback');
+          video.play().catch((error) => {
+            console.log('Video play failed, showing mobile play button:', error);
+            // If autoplay fails, show a play button for mobile
+            setShowMobilePlayButton(true);
+            setShowContent(true);
+            setShowNavigation(true);
+          });
+        } else if (playbackMode === 'replay') {
+          // For replay mode, start playing immediately
+          console.log('Replay mode - starting video playback');
+          video.currentTime = 0;
+          video.play().catch((error) => {
+            console.log('Video play failed, showing mobile play button:', error);
+            // If autoplay fails, show a play button for mobile
+            setShowMobilePlayButton(true);
+            setShowContent(true);
+            setShowNavigation(true);
+          });
+        }
+      }, 100);
     };
 
     const handlePlay = () => {
@@ -184,9 +230,13 @@ const VideoLanding: React.FC = () => {
         autoPlay={false}
         muted
         playsInline
-        preload="metadata"
+        preload={isMobile ? "none" : "auto"}
         controls={false}
         loop={false}
+        webkit-playsinline="true"
+        x5-playsinline="true"
+        x5-video-player-type="h5"
+        x5-video-player-fullscreen="false"
         onLoadStart={() => {
           console.log('Video loading with src:', videoSource === heroVideoShort ? 'SHORT VIDEO' : 'FULL VIDEO');
         }}
@@ -312,6 +362,24 @@ const VideoLanding: React.FC = () => {
 
 
         {/* Logo reveal removed - using single logo in content */}
+
+        {/* Mobile play button when autoplay fails */}
+        {showMobilePlayButton && (
+          <div className="absolute inset-0 flex items-center justify-center z-30">
+            <button 
+              onClick={() => {
+                const video = videoRef.current;
+                if (video) {
+                  setShowMobilePlayButton(false);
+                  video.play().catch(console.error);
+                }
+              }}
+              className="bg-white/20 backdrop-blur-lg text-white px-8 py-4 rounded-full font-semibold hover:bg-white/30 transition-all duration-300 flex items-center gap-3 text-lg"
+            >
+              ▶ Play Video
+            </button>
+          </div>
+        )}
 
         {/* Video replay prompt when video has ended */}
         {hasVideoEnded && (
