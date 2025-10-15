@@ -28,7 +28,7 @@ const About: React.FC = () => {
           <div className="mb-20">
             <div className="space-y-6 mb-12">
               <div className="flex items-center gap-4 mb-6">
-                <Target className="w-8 h-8 text-blue-400" />
+                <Target className="w-8 h-8 text-[#FFC06B]" />
                 <h2 className="text-3xl font-bold">Our Mission</h2>
               </div>
               <p className="text-lg text-gray-300 leading-relaxed">
@@ -46,18 +46,18 @@ const About: React.FC = () => {
             <div className="bg-gradient-to-br from-[#010214]/70 to-[#CB2F19]/35 p-8 rounded-2xl border border-[#CB2F19]/30">
               <h3 className="text-2xl font-bold mb-6 text-center">ZON Impact</h3>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                <div className="text-center">
-                  <div className="text-4xl font-bold text-[#FFC06B] mb-2">35%+</div>
-                  <div className="text-[#EFE6D4]/70">Energy Reduction</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-4xl font-bold text-[#FF6826] mb-2">50%+</div>
-                  <div className="text-[#EFE6D4]/70">Cost Savings</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-4xl font-bold text-green-400 mb-2">40%</div>
-                  <div className="text-gray-300">Capacity Increase</div>
-                </div>
+                       <div className="text-center">
+                         <div className="text-4xl font-bold text-[#FF6826] mb-2">35%+</div>
+                         <div className="text-[#EFE6D4]/70">Energy Reduction</div>
+                       </div>
+                       <div className="text-center">
+                         <div className="text-4xl font-bold text-[#FFC06B] mb-2">50%+</div>
+                         <div className="text-[#EFE6D4]/70">Cost Savings</div>
+                       </div>
+                       <div className="text-center">
+                         <div className="text-4xl font-bold text-[#CB2F19] mb-2">40%</div>
+                         <div className="text-gray-300">Capacity Increase</div>
+                       </div>
               </div>
             </div>
           </div>
@@ -89,7 +89,7 @@ const About: React.FC = () => {
               </div>
 
               <div className="bg-gray-900/50 p-8 rounded-xl border border-gray-800 hover:border-green-500/30 transition-all">
-                <Globe className="w-12 h-12 text-green-400 mb-4" />
+                <Globe className="w-12 h-12 text-[#FFC06B] mb-4" />
                 <h3 className="text-2xl font-bold mb-4">Sustainability</h3>
                 <p className="text-gray-300">
                   Environmental responsibility is at the core of our mission, 
@@ -112,6 +112,7 @@ const About: React.FC = () => {
               </Link>
               <Link 
                 to="/contact"
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                 className="border-2 border-white text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-white hover:text-black transition-all duration-300 transform hover:scale-105"
               >
                 Contact Us

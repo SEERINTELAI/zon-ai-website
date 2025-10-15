@@ -32,9 +32,9 @@ export const Solutions: React.FC = () => {
         "24/7 intelligent system monitoring"
       ],
       benefits: [
-        { metric: "35%", label: "Energy Savings", color: "text-[#FFC06B]" },
-        { metric: "50%", label: "Cost Reduction", color: "text-[#FF6826]" },
-        { metric: "99.9%", label: "Uptime", color: "text-[#FFC06B]" }
+        { metric: "35%", label: "Energy Savings", color: "text-[#FF6826]" },
+        { metric: "50%", label: "Cost Reduction", color: "text-[#FFC06B]" },
+        { metric: "99.9%", label: "Uptime", color: "text-[#CB2F19]" }
       ],
       gradient: "from-[#CB2F19]/15 to-[#FF6826]/25"
     },
@@ -51,9 +51,9 @@ export const Solutions: React.FC = () => {
         "Advanced encryption and access controls"
       ],
       benefits: [
-        { metric: "99.8%", label: "Threat Detection", color: "text-green-400" },
-        { metric: "100%", label: "Compliance\nRate", color: "text-blue-400" },
-        { metric: "24/7", label: "Monitoring", color: "text-[#FFC06B]" }
+        { metric: "99.8%", label: "Threat Detection", color: "text-[#FF6826]" },
+        { metric: "100%", label: "Compliance\nRate", color: "text-[#FFC06B]" },
+        { metric: "24/7", label: "Monitoring", color: "text-[#CB2F19]" }
       ],
       gradient: "from-[#FF6826]/20 to-[#FFC06B]/20"
     },
@@ -89,8 +89,8 @@ export const Solutions: React.FC = () => {
         "Cloud migration and optimization services"
       ],
       benefits: [
-        { metric: "40%", label: "Cloud Savings", color: "text-[#FFC06B]" },
-        { metric: "3x", label: "Deployment Speed", color: "text-[#FF6826]" },
+        { metric: "40%", label: "Cloud Savings", color: "text-[#FF6826]" },
+        { metric: "3x", label: "Deployment Speed", color: "text-[#FFC06B]" },
         { metric: "95%", label: "Efficiency Gain", color: "text-[#CB2F19]" }
       ],
       gradient: "from-[#FF6826]/20 to-[#CB2F19]/30"
@@ -178,7 +178,7 @@ export const Solutions: React.FC = () => {
                 {/* Features */}
                 <div className="mb-6">
                   <h4 className="text-white font-semibold mb-4 flex items-center gap-2">
-                    <Database className="w-5 h-5 text-blue-400" />
+                    <Database className="w-5 h-5 text-[#FFC06B]" />
                     Key Capabilities
                   </h4>
                   <ul className="space-y-2">
@@ -195,12 +195,12 @@ export const Solutions: React.FC = () => {
                 <div className="grid grid-cols-3 gap-3 mb-6">
                   {solution.benefits.map((benefit, idx) => (
                     <div key={idx} className="text-center p-3 bg-[#010214]/60 rounded-lg border border-[#CB2F19]/30">
-                      <div className={`text-xl font-bold ${benefit.color} mb-1`}>
-                        {benefit.metric}
-                      </div>
-                      <div className="text-[#EFE6D4]/70 text-xs">
-                        {benefit.label}
-                      </div>
+                             <div className={`text-xl font-bold ${benefit.color} mb-1`}>
+                               {benefit.metric}
+                             </div>
+                             <div className="text-[#EFE6D4]/70 text-xs">
+                               {benefit.label}
+                             </div>
                     </div>
                   ))}
                 </div>
@@ -208,6 +208,7 @@ export const Solutions: React.FC = () => {
                 {/* CTA */}
                 <Link
                   to="/contact"
+                  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                   className="w-full bg-[#FF6826] text-black px-6 py-3 rounded-xl font-semibold hover:bg-[#FFC06B] transition-all duration-300 flex items-center justify-center gap-2 group"
                 >
                   Get Started
@@ -279,12 +280,14 @@ export const Solutions: React.FC = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Link 
                 to="/contact"
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                 className="bg-white text-black px-8 py-4 rounded-full font-semibold text-lg hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-2xl"
               >
                 Start Your Journey
               </Link>
               <Link 
                 to="/products"
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                 className="border-2 border-white text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-white hover:text-black transition-all duration-300 transform hover:scale-105"
               >
                 View Products

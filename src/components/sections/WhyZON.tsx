@@ -10,7 +10,7 @@ export const WhyZON: React.FC = () => {
       highlight: "Innovation Leader"
     },
     {
-      icon: <TrendingUp className="w-8 h-8 text-green-400" />,
+      icon: <TrendingUp className="w-8 h-8 text-[#FF6826]" />,
       title: "Significant Cost Savings",
       description: "Our products are designed to dramatically reduce operational costs, energy consumption, and resource requirements, delivering exceptional ROI.",
       highlight: "50%+ Cost Reduction"
@@ -26,7 +26,7 @@ export const WhyZON: React.FC = () => {
   const stats = [
     { icon: <Award className="w-6 h-6 text-orange-400" />, label: "Patents", value: "12+" },
     { icon: <Users className="w-6 h-6 text-purple-400" />, label: "AI Models", value: "30+" },
-    { icon: <Globe className="w-6 h-6 text-green-400" />, label: "Vertical Markets", value: "50+" }
+    { icon: <Globe className="w-6 h-6 text-[#FFC06B]" />, label: "Vertical Markets", value: "50+" }
   ];
 
   return (
@@ -124,8 +124,8 @@ export const WhyZON: React.FC = () => {
             </p>
 
             <div className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-green-600/20 to-blue-600/20 border border-green-500/30 rounded-full">
-              <Award className="w-5 h-5 text-green-400 mr-2" />
-              <span className="text-green-300 font-medium">
+              <Award className="w-5 h-5 text-[#FF6826] mr-2" />
+              <span className="text-[#FFC06B] font-medium">
                 Driving Efficiency, Sustainability, and Growth Across Industries
               </span>
             </div>

@@ -172,31 +172,37 @@ const VideoLanding: React.FC = () => {
             <div className="text-center">
               <div className="font-bold text-[#FF6826] mb-3" style={{
                 fontSize: 'clamp(1.5rem, 4.5vw, 2.75rem)',
-                lineHeight: '1.1'
+                lineHeight: '1.1',
+                textShadow: '0 1px 2px rgba(0, 0, 0, 0.3)'
               }}>35%+</div>
               <div className="text-white uppercase tracking-wider font-medium" style={{
                 fontSize: 'clamp(0.7rem, 1.4vw, 0.95rem)',
-                lineHeight: '1.3'
+                lineHeight: '1.3',
+                textShadow: '0 1px 1px rgba(0, 0, 0, 0.3)'
               }}>ENERGY REDUCTION</div>
             </div>
             <div className="text-center">
               <div className="font-bold text-[#FF6826] mb-3" style={{
                 fontSize: 'clamp(1.5rem, 4.5vw, 2.75rem)',
-                lineHeight: '1.1'
+                lineHeight: '1.1',
+                textShadow: '0 1px 2px rgba(0, 0, 0, 0.3)'
               }}>50%+</div>
               <div className="text-white uppercase tracking-wider font-medium" style={{
                 fontSize: 'clamp(0.7rem, 1.4vw, 0.95rem)',
-                lineHeight: '1.3'
+                lineHeight: '1.3',
+                textShadow: '0 1px 1px rgba(0, 0, 0, 0.3)'
               }}>COST SAVINGS</div>
             </div>
             <div className="text-center">
               <div className="font-bold text-[#FF6826] mb-3" style={{
                 fontSize: 'clamp(1.5rem, 4.5vw, 2.75rem)',
-                lineHeight: '1.1'
+                lineHeight: '1.1',
+                textShadow: '0 1px 2px rgba(0, 0, 0, 0.3)'
               }}>40%</div>
               <div className="text-white uppercase tracking-wider font-medium" style={{
                 fontSize: 'clamp(0.7rem, 1.4vw, 0.95rem)',
-                lineHeight: '1.3'
+                lineHeight: '1.3',
+                textShadow: '0 1px 1px rgba(0, 0, 0, 0.3)'
               }}>CAPACITY INCREASE</div>
             </div>
           </div>

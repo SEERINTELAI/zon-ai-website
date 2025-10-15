@@ -6,7 +6,7 @@ import { Navbar } from '../layout/Navbar';
 export const Products: React.FC = () => {
   const products = [
     {
-      icon: <Battery className="w-12 h-12 text-green-400" />,
+      icon: <Battery className="w-12 h-12 text-[#FF6826]" />,
       name: "ZON Energy™",
       tagline: "Sustainable Power for Data Centers",
       description: "Self-optimizing AI-driven operational and energy efficiency technologies that perform beyond all currently available market standards and technologies.",
@@ -19,9 +19,9 @@ export const Products: React.FC = () => {
         "Applies most advanced adaptive AI to improve performance"
       ],
       metrics: [
-        { label: "Energy Reduction", value: "35%+", color: "text-green-400" },
-        { label: "Cost Savings", value: "50%+", color: "text-blue-400" },
-        { label: "Capacity Increase", value: "40%", color: "text-[#FFC06B]" }
+        { label: "Energy Reduction", value: "35%+", color: "text-[#FF6826]" },
+        { label: "Cost Savings", value: "50%+", color: "text-[#FFC06B]" },
+        { label: "Capacity Increase", value: "40%", color: "text-[#CB2F19]" }
       ],
       gradient: "from-[#CB2F19]/15 to-[#FF6826]/25"
     },
@@ -103,7 +103,7 @@ export const Products: React.FC = () => {
                 {/* Features */}
                 <div className="mb-8">
                   <h4 className="text-white font-semibold mb-4 flex items-center gap-2">
-                    <Database className="w-5 h-5 text-blue-400" />
+                    <Database className="w-5 h-5 text-[#FFC06B]" />
                     Key Features
                   </h4>
                   <ul className="space-y-3">
@@ -120,14 +120,26 @@ export const Products: React.FC = () => {
                 <div className="grid grid-cols-3 gap-4 mb-8">
                   {product.metrics.map((metric, idx) => (
                     <div key={idx} className="text-center p-4 bg-[#010214]/70 rounded-xl border border-[#CB2F19]/30">
-                      <div className={`text-2xl font-bold ${metric.color} mb-1`}>
-                        {metric.value}
-                      </div>
-                      <div className="text-[#EFE6D4]/70 text-sm">
-                        {metric.label}
-                      </div>
+                             <div className={`text-2xl font-bold ${metric.color} mb-1`}>
+                               {metric.value}
+                             </div>
+                             <div className="text-[#EFE6D4]/70 text-sm">
+                               {metric.label}
+                             </div>
                     </div>
                   ))}
+                </div>
+
+                {/* Get Started Button */}
+                <div className="mt-8">
+                  <Link
+                    to="/contact"
+                    onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                    className="w-full bg-[#FF6826] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#CB2F19] transition-all duration-300 flex items-center justify-center gap-2 group"
+                  >
+                    Get Started
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </Link>
                 </div>
 
               </div>
@@ -153,12 +165,14 @@ export const Products: React.FC = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Link 
                 to="/contact"
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                 className="bg-white text-black px-8 py-4 rounded-full font-semibold text-lg hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-2xl"
               >
                 Contact Sales
               </Link>
               <Link 
                 to="/solutions"
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                 className="border-2 border-white text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-white hover:text-black transition-all duration-300 transform hover:scale-105"
               >
                 View Solutions

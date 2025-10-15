@@ -92,22 +92,22 @@ export const Contact: React.FC = () => {
           <div className="bg-gradient-to-r from-[#010214]/70 to-[#CB2F19]/35 p-8 rounded-xl border border-[#CB2F19]/30">
             <h3 className="text-2xl font-bold text-white mb-6 text-center">Why Choose ZON?</h3>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-              <div className="text-center">
-                <div className="text-3xl font-bold text-[#FFC06B] mb-1">500+</div>
-                <div className="text-gray-300 text-sm">Models Supported</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-[#FF6826] mb-1">$2B+</div>
-                <div className="text-[#EFE6D4]/70 text-sm">Savings</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-[#CB2F19] mb-1">95%</div>
-                <div className="text-[#EFE6D4]/70 text-sm">Storage Savings</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-[#FFC06B] mb-1">Full</div>
-                <div className="text-[#EFE6D4]/70 text-sm">Standards Compliance</div>
-              </div>
+                     <div className="text-center">
+                       <div className="text-3xl font-bold text-[#FF6826] mb-1">500+</div>
+                       <div className="text-gray-300 text-sm">Models Supported</div>
+                     </div>
+                     <div className="text-center">
+                       <div className="text-3xl font-bold text-[#FFC06B] mb-1">$2B+</div>
+                       <div className="text-[#EFE6D4]/70 text-sm">Savings</div>
+                     </div>
+                     <div className="text-center">
+                       <div className="text-3xl font-bold text-[#CB2F19] mb-1">95%</div>
+                       <div className="text-[#EFE6D4]/70 text-sm">Storage Savings</div>
+                     </div>
+                     <div className="text-center">
+                       <div className="text-3xl font-bold text-[#FFC06B] mb-1">Full</div>
+                       <div className="text-[#EFE6D4]/70 text-sm">Standards Compliance</div>
+                     </div>
             </div>
           </div>
         </div>
@@ -132,7 +132,7 @@ export const Contact: React.FC = () => {
             {isSubmitted ? (
               <div className="text-center py-12">
                 <div className="w-16 h-16 bg-green-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <CheckCircle className="w-8 h-8 text-green-400" />
+                  <CheckCircle className="w-8 h-8 text-[#FF6826]" />
                 </div>
                 <h3 className="text-xl font-semibold text-white mb-2">Message Sent!</h3>
                 <p className="text-gray-300">We'll get back to you within 24 hours.</p>
