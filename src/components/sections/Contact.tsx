@@ -84,7 +84,7 @@ export const Contact: React.FC = () => {
               Connect
             </span>
           </h1>
-          <p className="text-xl text-[#EFE6D4]/80 max-w-3xl mx-auto">Ready to transform your data center operations? Contact our team of experts to learn how ZON can optimize your infrastructure.</p>
+          <p className="text-xl text-[#EFE6D4]/80 max-w-3xl mx-auto">Ready to revolutionize your business with AI? Contact our team of experts to discover how ZON can transform your operations and unlock unprecedented potential.</p>
         </div>
 
         {/* Why Choose ZON Section */}

@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, X, Search, Mail } from 'lucide-react';
+import { Menu, X, Search, Mail, ChevronDown } from 'lucide-react';
 import logoTransparent from '../../assets/logo-transparent.png';
 
 export const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [isProductsOpen, setIsProductsOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -14,6 +15,23 @@ export const Navbar: React.FC = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Element;
+      if (isProductsOpen && !target.closest('.products-dropdown')) {
+        setIsProductsOpen(false);
+      }
+    };
+
+    if (isProductsOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isProductsOpen]);
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
@@ -46,7 +64,63 @@ export const Navbar: React.FC = () => {
                  {/* Desktop Navigation - Center */}
                  <div className="hidden md:flex items-center space-x-8">
                    <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-white hover:text-gray-300 transition-colors font-medium cursor-pointer">Home</Link>
-                   <Link to="/products" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-white hover:text-gray-300 transition-colors font-medium cursor-pointer">Products</Link>
+                   
+                   {/* Products Dropdown */}
+                   <div className="relative products-dropdown">
+                     <button
+                       onClick={(e) => {
+                         e.preventDefault();
+                         e.stopPropagation();
+                         setIsProductsOpen(!isProductsOpen);
+                       }}
+                       className="text-white hover:text-gray-300 transition-colors font-medium cursor-pointer flex items-center gap-1"
+                     >
+                       Products
+                       <ChevronDown className={`w-4 h-4 transition-transform ${isProductsOpen ? 'rotate-180' : ''}`} />
+                     </button>
+                     {isProductsOpen && (
+                       <div
+                         className="absolute top-full left-0 mt-2 w-64 bg-black/95 backdrop-blur-lg border border-gray-800 rounded-lg shadow-xl z-50"
+                       >
+                         <div className="py-2">
+                           <Link
+                             to="/products"
+                             onClick={() => {
+                               window.scrollTo({ top: 0, behavior: 'smooth' });
+                               setIsProductsOpen(false);
+                             }}
+                             className="block px-4 py-3 text-white hover:bg-gray-800/50 transition-colors"
+                           >
+                             <div className="font-semibold">All Products</div>
+                             <div className="text-sm text-gray-400">Overview of our solutions</div>
+                           </Link>
+                           <Link
+                             to="/products/zon-energy"
+                             onClick={() => {
+                               window.scrollTo({ top: 0, behavior: 'smooth' });
+                               setIsProductsOpen(false);
+                             }}
+                             className="block px-4 py-3 text-white hover:bg-gray-800/50 transition-colors"
+                           >
+                             <div className="font-semibold">ZON Energy™</div>
+                             <div className="text-sm text-gray-400">Sustainable power for data centers</div>
+                           </Link>
+                           <Link
+                             to="/products/seer-intel-media"
+                             onClick={() => {
+                               window.scrollTo({ top: 0, behavior: 'smooth' });
+                               setIsProductsOpen(false);
+                             }}
+                             className="block px-4 py-3 text-white hover:bg-gray-800/50 transition-colors"
+                           >
+                             <div className="font-semibold">SEER Intel Media™</div>
+                             <div className="text-sm text-gray-400">AI-powered data intelligence</div>
+                           </Link>
+                         </div>
+                       </div>
+                     )}
+                   </div>
+                   
                    <Link to="/solutions" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-white hover:text-gray-300 transition-colors font-medium cursor-pointer">Solutions</Link>
                    <Link to="/about" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-white hover:text-gray-300 transition-colors font-medium cursor-pointer">About</Link>
                    <Link to="/contact" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-white hover:text-gray-300 transition-colors font-medium cursor-pointer">Contact</Link>
@@ -78,7 +152,17 @@ export const Navbar: React.FC = () => {
           <div className="md:hidden">
                  <div className="px-2 pt-2 pb-3 space-y-1 bg-black/95 backdrop-blur-lg border-t border-gray-800">
                    <Link to="/" onClick={() => handleMobileNavClick('/')} className="block px-3 py-3 text-white hover:text-gray-300 font-medium">Home</Link>
-                   <Link to="/products" onClick={() => handleMobileNavClick('/products')} className="block px-3 py-3 text-white hover:text-gray-300 font-medium">Products</Link>
+                   
+                   {/* Mobile Products Section */}
+                   <div className="px-3 py-3">
+                     <div className="text-white font-medium mb-2">Products</div>
+                     <div className="ml-4 space-y-2">
+                       <Link to="/products" onClick={() => handleMobileNavClick('/products')} className="block px-3 py-2 text-gray-300 hover:text-white text-sm">All Products</Link>
+                       <Link to="/products/zon-energy" onClick={() => handleMobileNavClick('/products/zon-energy')} className="block px-3 py-2 text-gray-300 hover:text-white text-sm">ZON Energy™</Link>
+                       <Link to="/products/seer-intel-media" onClick={() => handleMobileNavClick('/products/seer-intel-media')} className="block px-3 py-2 text-gray-300 hover:text-white text-sm">SEER Intel Media™</Link>
+                     </div>
+                   </div>
+                   
                    <Link to="/solutions" onClick={() => handleMobileNavClick('/solutions')} className="block px-3 py-3 text-white hover:text-gray-300 font-medium">Solutions</Link>
                    <Link to="/about" onClick={() => handleMobileNavClick('/about')} className="block px-3 py-3 text-white hover:text-gray-300 font-medium">About</Link>
                    <Link to="/contact" onClick={() => handleMobileNavClick('/contact')} className="block px-3 py-3 text-white hover:text-gray-300 font-medium">Contact</Link>

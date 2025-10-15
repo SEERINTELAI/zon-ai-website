@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Battery, Film, ArrowRight, Star, Zap, Database, Home } from 'lucide-react';
+import { Battery, Film, ArrowRight, Zap, Database, Home } from 'lucide-react';
 import { Navbar } from '../layout/Navbar';
 
 export const Products: React.FC = () => {
@@ -60,15 +60,14 @@ export const Products: React.FC = () => {
           </div>
           <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
             ZON
-            <span className="block bg-gradient-to-r from-[#FF6826] to-[#FFC06B] bg-clip-text text-transparent">Products and Services</span>
+            <span className="block bg-gradient-to-r from-[#FF6826] to-[#FFC06B] bg-clip-text text-transparent">Products</span>
           </h1>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            Revolutionary AI technologies revolutionize AI data center operations 
-            and multimedia processing capabilities.
+            Revolutionary AI technologies, we are redefining data center operations and revolutionizing multimedia processing capabilities.
           </p>
         </div>
 
-        {/* Products Grid */}
+        {/* Products Overview Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {products.map((product, index) => (
             <div
@@ -78,66 +77,43 @@ export const Products: React.FC = () => {
               {/* Product Card */}
               <div className="relative p-8 z-10">
                 {/* Icon and Header */}
-                <div className="flex items-start gap-6 mb-8">
+                <div className="flex items-start gap-6 mb-6">
                   <div className="flex-shrink-0 p-3 bg-gray-900/50 rounded-xl border border-gray-700">
                     {product.icon}
                   </div>
                   <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
-                      <h3 className="text-2xl font-bold text-white">{product.name}</h3>
-                      <div className="flex items-center gap-1 text-yellow-400">
-                        {[...Array(5)].map((_, i) => (
-                          <Star key={i} className="w-4 h-4 fill-current" />
-                        ))}
-                      </div>
-                    </div>
+                    <h3 className="text-2xl font-bold text-white mb-2">{product.name}</h3>
                     <p className="text-gray-400 font-medium">{product.tagline}</p>
                   </div>
                 </div>
 
-                {/* Description */}
-                <p className="text-gray-300 text-lg leading-relaxed mb-8">
+                {/* Brief Description */}
+                <p className="text-gray-300 text-lg leading-relaxed mb-6">
                   {product.description}
                 </p>
 
-                {/* Features */}
-                <div className="mb-8">
-                  <h4 className="text-white font-semibold mb-4 flex items-center gap-2">
-                    <Database className="w-5 h-5 text-[#FFC06B]" />
-                    Key Features
-                  </h4>
-                  <ul className="space-y-3">
-                    {product.features.map((feature, idx) => (
-                      <li key={idx} className="flex items-center gap-3 text-[#EFE6D4]/80">
-                        <div className="w-2 h-2 bg-[#FF6826] rounded-full flex-shrink-0" />
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Metrics */}
+                {/* Key Metrics */}
                 <div className="grid grid-cols-3 gap-4 mb-8">
                   {product.metrics.map((metric, idx) => (
                     <div key={idx} className="text-center p-4 bg-[#010214]/70 rounded-xl border border-[#CB2F19]/30">
-                             <div className={`text-2xl font-bold ${metric.color} mb-1`}>
-                               {metric.value}
-                             </div>
-                             <div className="text-[#EFE6D4]/70 text-sm">
-                               {metric.label}
-                             </div>
+                      <div className={`text-2xl font-bold ${metric.color} mb-1`}>
+                        {metric.value}
+                      </div>
+                      <div className="text-[#EFE6D4]/70 text-sm">
+                        {metric.label}
+                      </div>
                     </div>
                   ))}
                 </div>
 
-                {/* Get Started Button */}
+                {/* Learn More Button */}
                 <div className="mt-8">
                   <Link
-                    to="/contact"
+                    to={index === 0 ? "/products/zon-energy" : "/products/seer-intel-media"}
                     onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                     className="w-full bg-[#FF6826] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#CB2F19] transition-all duration-300 flex items-center justify-center gap-2 group"
                   >
-                    Get Started
+                    Learn More
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </Link>
                 </div>
@@ -156,26 +132,25 @@ export const Products: React.FC = () => {
         <div className="text-center mt-20">
           <div className="bg-gradient-to-r from-[#010214]/70 to-[#CB2F19]/40 p-12 rounded-2xl border border-[#CB2F19]/30">
             <h2 className="text-3xl font-bold text-white mb-4">
-              Ready to Transform Your Operations?
+              Ready to Explore Our Solutions?
             </h2>
             <p className="text-xl text-[#EFE6D4]/80 mb-8 max-w-2xl mx-auto">
-              Join industry leaders who trust our AI solutions to optimize their infrastructure 
-              and reduce operational costs by up to 50%.
+              Discover how ZON's AI technologies can transform your operations and deliver measurable results.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Link 
-                to="/contact"
+                to="/solutions"
                 onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                 className="bg-white text-black px-8 py-4 rounded-full font-semibold text-lg hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-2xl"
               >
-                Contact Sales
+                View Solutions
               </Link>
               <Link 
-                to="/solutions"
+                to="/contact"
                 onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                 className="border-2 border-white text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-white hover:text-black transition-all duration-300 transform hover:scale-105"
               >
-                View Solutions
+                Contact Sales
               </Link>
             </div>
           </div>

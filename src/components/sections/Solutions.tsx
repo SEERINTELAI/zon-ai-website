@@ -9,7 +9,6 @@ import {
   Cloud, 
   ArrowRight, 
   CheckCircle, 
-  Star,
   Home,
   Cpu,
   Monitor,
@@ -131,10 +130,7 @@ export const Solutions: React.FC = () => {
             Enterprise Solutions
           </div>
           <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
-            Transform Your
-            <span className="block bg-gradient-to-r from-[#FF6826] to-[#FFC06B] bg-clip-text text-transparent">
-              Infrastructure
-            </span>
+            ZON builds AI that makes AI better
           </h1>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
             Comprehensive AI-powered solutions designed to optimize, secure, and future-proof 
@@ -162,11 +158,6 @@ export const Solutions: React.FC = () => {
                     <h3 className="text-2xl font-bold text-white mb-3">
                       {solution.title}
                     </h3>
-                    <div className="flex items-center gap-1 text-yellow-400">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="w-4 h-4 fill-current" />
-                      ))}
-                    </div>
                   </div>
                 </div>
 
