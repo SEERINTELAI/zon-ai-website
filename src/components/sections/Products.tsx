@@ -1,0 +1,172 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { Battery, Film, ArrowRight, Star, Zap, Database, Home } from 'lucide-react';
+import { Navbar } from '../layout/Navbar';
+
+export const Products: React.FC = () => {
+  const products = [
+    {
+      icon: <Battery className="w-12 h-12 text-green-400" />,
+      name: "ZON Energy™",
+      tagline: "Sustainable Power for Data Centers",
+      description: "Self-optimizing AI-driven operational and energy efficiency technologies that perform beyond all currently available market standards and technologies.",
+      features: [
+        "AI-driven auto-optimization",
+        "Real-time energy monitoring and optimization",
+        "Machine Learning optimized maintenance alerts",
+        "Carbon footprint reduction",
+        "Seamless integration",
+        "Applies most advanced adaptive AI to improve performance"
+      ],
+      metrics: [
+        { label: "Energy Reduction", value: "35%+", color: "text-green-400" },
+        { label: "Cost Savings", value: "50%+", color: "text-blue-400" },
+        { label: "Capacity Increase", value: "40%", color: "text-[#FFC06B]" }
+      ],
+      gradient: "from-[#CB2F19]/15 to-[#FF6826]/25"
+    },
+    {
+      icon: <Film className="w-12 h-12 text-[#FF6826]" />,
+      name: "SEER Intel Media™",
+      tagline: "AI-Powered Data Intelligence",
+      description: "Advanced multimedia data center optimization platform powered by the latest advances in AI, media and computer vision techniques.",
+      features: [
+        "Deep Learning plus Computer vision analytics",
+        "Intelligent content processing and optimization",
+        "Real-time data insights",
+        "Automated quality control",
+        "Multi-format compatibility",
+        "Most advanced hybrid Deep Learning Compression available"
+      ],
+      metrics: [
+        { label: "Processing Speed", value: "10x", color: "text-[#FF6826]" },
+        { label: "Accuracy Rate", value: "99.7%", color: "text-[#FFC06B]" },
+        { label: "Data Efficiency", value: "85%+", color: "text-[#CB2F19]" }
+      ],
+      gradient: "from-[#FFC06B]/20 to-[#FF6826]/20"
+    }
+  ];
+
+  return (
+    <section id="products" className="py-20 bg-gradient-to-b from-[#010214] to-black">
+      {/* Navigation */}
+      <Navbar />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-[#EFE6D4]">
+        {/* Header */}
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center gap-2 bg-[#FF6826]/15 text-[#FF6826] px-4 py-2 rounded-full text-sm font-medium mb-6">
+            <Zap className="w-4 h-4" />
+            Advanced AI Solutions
+          </div>
+          <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
+            ZON
+            <span className="block bg-gradient-to-r from-[#FF6826] to-[#FFC06B] bg-clip-text text-transparent">Products and Services</span>
+          </h1>
+          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+            Revolutionary AI technologies revolutionize AI data center operations 
+            and multimedia processing capabilities.
+          </p>
+        </div>
+
+        {/* Products Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          {products.map((product, index) => (
+            <div
+              key={index}
+              className={`relative bg-gradient-to-br ${product.gradient} backdrop-blur-lg border border-gray-800 rounded-2xl overflow-hidden group hover:scale-[1.02] transition-all duration-500`}
+            >
+              {/* Product Card */}
+              <div className="relative p-8 z-10">
+                {/* Icon and Header */}
+                <div className="flex items-start gap-6 mb-8">
+                  <div className="flex-shrink-0 p-3 bg-gray-900/50 rounded-xl border border-gray-700">
+                    {product.icon}
+                  </div>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-3 mb-2">
+                      <h3 className="text-2xl font-bold text-white">{product.name}</h3>
+                      <div className="flex items-center gap-1 text-yellow-400">
+                        {[...Array(5)].map((_, i) => (
+                          <Star key={i} className="w-4 h-4 fill-current" />
+                        ))}
+                      </div>
+                    </div>
+                    <p className="text-gray-400 font-medium">{product.tagline}</p>
+                  </div>
+                </div>
+
+                {/* Description */}
+                <p className="text-gray-300 text-lg leading-relaxed mb-8">
+                  {product.description}
+                </p>
+
+                {/* Features */}
+                <div className="mb-8">
+                  <h4 className="text-white font-semibold mb-4 flex items-center gap-2">
+                    <Database className="w-5 h-5 text-blue-400" />
+                    Key Features
+                  </h4>
+                  <ul className="space-y-3">
+                    {product.features.map((feature, idx) => (
+                      <li key={idx} className="flex items-center gap-3 text-[#EFE6D4]/80">
+                        <div className="w-2 h-2 bg-[#FF6826] rounded-full flex-shrink-0" />
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Metrics */}
+                <div className="grid grid-cols-3 gap-4 mb-8">
+                  {product.metrics.map((metric, idx) => (
+                    <div key={idx} className="text-center p-4 bg-[#010214]/70 rounded-xl border border-[#CB2F19]/30">
+                      <div className={`text-2xl font-bold ${metric.color} mb-1`}>
+                        {metric.value}
+                      </div>
+                      <div className="text-[#EFE6D4]/70 text-sm">
+                        {metric.label}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+              </div>
+
+              {/* Background Pattern */}
+              <div className="absolute inset-0 opacity-5">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.1)_1px,transparent_0)] bg-[length:20px_20px]" />
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Bottom CTA */}
+        <div className="text-center mt-20">
+          <div className="bg-gradient-to-r from-[#010214]/70 to-[#CB2F19]/40 p-12 rounded-2xl border border-[#CB2F19]/30">
+            <h2 className="text-3xl font-bold text-white mb-4">
+              Ready to Transform Your Operations?
+            </h2>
+            <p className="text-xl text-[#EFE6D4]/80 mb-8 max-w-2xl mx-auto">
+              Join industry leaders who trust our AI solutions to optimize their infrastructure 
+              and reduce operational costs by up to 50%.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <Link 
+                to="/contact"
+                className="bg-white text-black px-8 py-4 rounded-full font-semibold text-lg hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-2xl"
+              >
+                Contact Sales
+              </Link>
+              <Link 
+                to="/solutions"
+                className="border-2 border-white text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-white hover:text-black transition-all duration-300 transform hover:scale-105"
+              >
+                View Solutions
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
