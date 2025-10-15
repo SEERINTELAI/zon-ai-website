@@ -58,12 +58,15 @@ export const Navbar: React.FC = () => {
         <div className="flex items-center justify-center h-16 relative">
           {/* Logo - Left */}
           <Link to="/" className="absolute left-0 flex items-center">
-            <img src={logoTransparent} alt="ZON" className="h-6 w-auto" />
+            <img src={logoTransparent} alt="ZON" className="h-8 w-auto" />
           </Link>
 
                  {/* Desktop Navigation - Center */}
                  <div className="hidden md:flex items-center space-x-8">
-                   <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-white hover:text-gray-300 transition-colors font-medium cursor-pointer">Home</Link>
+                   <Link to="/" onClick={() => {
+                     sessionStorage.setItem('isDirectNavigation', 'true');
+                     window.scrollTo({ top: 0, behavior: 'smooth' });
+                   }} className="text-white hover:text-gray-300 transition-colors font-medium cursor-pointer">Home</Link>
                    
                    {/* Products Dropdown */}
                    <div className="relative products-dropdown">
@@ -151,7 +154,10 @@ export const Navbar: React.FC = () => {
         {isOpen && (
           <div className="md:hidden">
                  <div className="px-2 pt-2 pb-3 space-y-1 bg-black/95 backdrop-blur-lg border-t border-gray-800">
-                   <Link to="/" onClick={() => handleMobileNavClick('/')} className="block px-3 py-3 text-white hover:text-gray-300 font-medium">Home</Link>
+                   <Link to="/" onClick={() => {
+                     sessionStorage.setItem('isDirectNavigation', 'true');
+                     handleMobileNavClick('/');
+                   }} className="block px-3 py-3 text-white hover:text-gray-300 font-medium">Home</Link>
                    
                    {/* Mobile Products Section */}
                    <div className="px-3 py-3">

@@ -32,13 +32,16 @@ const About: React.FC = () => {
                 <h2 className="text-3xl font-bold">Our Mission</h2>
               </div>
               <p className="text-lg text-gray-300 leading-relaxed">
-                The world stands at the brink of an energy crisis driven by the explosive growth of artificial intelligence. At ZON, we don't just adapt to this reality—we transform it. Through revolutionary, energy-efficient AI technology, we're redefining how intelligence is powered, delivered, and sustained.
+                AI's rapid evolution creates a paradox: each advancement demands more energy, more infrastructure, more resources at an ever-accelerating pace. At ZON, we've stepped back from this to take a different approach and build something different—AI that makes AI better.
               </p>
               <p className="text-lg text-gray-300 leading-relaxed">
-                We're committed to transforming the very foundation of AI—turning inefficiency into innovation and crisis into breakthrough. Our intelligent systems drastically reduce energy consumption while maintaining peak performance and reliability, empowering organizations to operate smarter, cleaner, and faster than ever before.
+                Our patented technologies don't just participate in the AI revolution; they act as a lever that amplifies what's possible. We've developed tools that multiply the efficiencies and effectiveness of existing AI systems across their entire lifecycle—from the data centers that train and support AI to the applications that are used to deploy it. The result is exponential gains in energy efficiency and operational performance, without compromising utility.
               </p>
               <p className="text-lg text-gray-300 leading-relaxed">
-                The future of AI can't afford waste. ZON is where sustainability meets performance—transforming energy into possibility.
+                This isn't about choosing between capability and sustainability. It's about building intelligence that compounds itself—where every breakthrough in AI accelerates through our technology, becoming more efficient, more accessible, more practical. As AI continues its accelerated evolution, we've designed our approach to ride that wave: the faster AI advances, the more our leverage matters.
+              </p>
+              <p className="text-lg text-gray-300 leading-relaxed">
+                We're solving for a moving target. And we're built on technologies designed to keep pace.
               </p>
             </div>
 

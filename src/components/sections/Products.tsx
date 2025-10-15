@@ -82,7 +82,7 @@ export const Products: React.FC = () => {
                     {product.icon}
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-2xl font-bold text-white mb-2">{product.name}</h3>
+                    <h3 className="text-2xl font-black text-white mb-2">{product.name}</h3>
                     <p className="text-gray-400 font-medium">{product.tagline}</p>
                   </div>
                 </div>

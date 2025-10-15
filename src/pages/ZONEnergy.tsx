@@ -50,7 +50,7 @@ const ZONEnergy: React.FC = () => {
             </div>
             <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-6 px-8">
               <span className="text-white">ZON </span>
-              <span className="bg-gradient-to-r from-[#FF6826] to-[#FFC06B] bg-clip-text text-transparent">Energy™</span>
+              <span className="bg-gradient-to-r from-[#FF6826] to-[#FFC06B] bg-clip-text text-transparent">Energy</span><span className="bg-gradient-to-r from-[#FF6826] to-[#FFC06B] bg-clip-text text-transparent font-normal">™</span>
             </h1>
             <p className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto mb-8">
               Sustainable Power for Data Centers

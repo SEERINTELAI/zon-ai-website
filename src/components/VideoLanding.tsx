@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Navbar } from './layout/Navbar';
 import heroVideo from '../assets/hero-video.mp4';
+import heroVideoShort from '../assets/hero-video-short.mp4';
 import logoTransparent from '../assets/logo-transparent.png';
 
 type PlaybackMode = 'initial' | 'replay' | 'navigation-return';
@@ -9,11 +10,41 @@ type PlaybackMode = 'initial' | 'replay' | 'navigation-return';
 const VideoLanding: React.FC = () => {
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   const [videoError, setVideoError] = useState(false);
-  const [showContent, setShowContent] = useState(false);
-  const [showNavigation, setShowNavigation] = useState(false);
+  const [showContent, setShowContent] = useState(() => {
+    const isDirectNavigation = sessionStorage.getItem('isDirectNavigation') === 'true';
+    const hasBeenHereBefore = sessionStorage.getItem('hasVisitedHome') === 'true';
+    const hasVideoPlayedOnce = sessionStorage.getItem('hasVideoPlayedOnce') === 'true';
+    
+    return isDirectNavigation && hasBeenHereBefore && hasVideoPlayedOnce;
+  });
+  
+  const [showNavigation, setShowNavigation] = useState(() => {
+    const isDirectNavigation = sessionStorage.getItem('isDirectNavigation') === 'true';
+    const hasBeenHereBefore = sessionStorage.getItem('hasVisitedHome') === 'true';
+    const hasVideoPlayedOnce = sessionStorage.getItem('hasVideoPlayedOnce') === 'true';
+    
+    return isDirectNavigation && hasBeenHereBefore && hasVideoPlayedOnce;
+  });
   const [hasVideoEnded, setHasVideoEnded] = useState(false);
-  const [playbackMode, setPlaybackMode] = useState<PlaybackMode>('initial');
-  const [isNavigationReturn, setIsNavigationReturn] = useState(false);
+  // Initialize state based on session storage immediately
+  const [playbackMode, setPlaybackMode] = useState<PlaybackMode>(() => {
+    const isDirectNavigation = sessionStorage.getItem('isDirectNavigation') === 'true';
+    const hasBeenHereBefore = sessionStorage.getItem('hasVisitedHome') === 'true';
+    const hasVideoPlayedOnce = sessionStorage.getItem('hasVideoPlayedOnce') === 'true';
+    
+    if (isDirectNavigation && hasBeenHereBefore && hasVideoPlayedOnce) {
+      return 'navigation-return';
+    }
+    return 'initial';
+  });
+  
+  const [isNavigationReturn, setIsNavigationReturn] = useState(() => {
+    const isDirectNavigation = sessionStorage.getItem('isDirectNavigation') === 'true';
+    const hasBeenHereBefore = sessionStorage.getItem('hasVisitedHome') === 'true';
+    const hasVideoPlayedOnce = sessionStorage.getItem('hasVideoPlayedOnce') === 'true';
+    
+    return isDirectNavigation && hasBeenHereBefore && hasVideoPlayedOnce;
+  });
   const videoRef = useRef<HTMLVideoElement>(null);
   const location = useLocation();
 
@@ -21,20 +52,29 @@ const VideoLanding: React.FC = () => {
   useEffect(() => {
     const isDirectNavigation = sessionStorage.getItem('isDirectNavigation') === 'true';
     const hasBeenHereBefore = sessionStorage.getItem('hasVisitedHome') === 'true';
+    const hasVideoPlayedOnce = sessionStorage.getItem('hasVideoPlayedOnce') === 'true';
     
-    if (isDirectNavigation && hasBeenHereBefore) {
+    console.log('Navigation detection:', {
+      isDirectNavigation,
+      hasBeenHereBefore,
+      hasVideoPlayedOnce
+    });
+    
+    // Clear the navigation flag immediately
+    sessionStorage.removeItem('isDirectNavigation');
+    
+    if (isDirectNavigation && hasBeenHereBefore && hasVideoPlayedOnce) {
+      console.log('Setting playback mode to navigation-return');
       setPlaybackMode('navigation-return');
       setIsNavigationReturn(true);
       // Immediately show content and navigation for navigation returns
       setShowContent(true);
       setShowNavigation(true);
     } else {
+      console.log('Setting playback mode to initial');
       setPlaybackMode('initial');
       sessionStorage.setItem('hasVisitedHome', 'true');
     }
-    
-    // Clear the navigation flag
-    sessionStorage.removeItem('isDirectNavigation');
   }, []);
 
   // Handle video timing for animations and end state
@@ -46,11 +86,30 @@ const VideoLanding: React.FC = () => {
       setIsVideoLoaded(true);
       
       if (playbackMode === 'navigation-return') {
-        // For navigation returns, start from last 2 seconds
-        const duration = video.duration;
-        if (duration && duration > 2) {
-          video.currentTime = duration - 2;
-        }
+        // For navigation returns, play the short video from the beginning
+        console.log('Navigation return - playing short video');
+        video.play().catch(console.error);
+      } else if (playbackMode === 'initial') {
+        // For initial visits, start playing from the beginning
+        console.log('Initial visit - starting video playback');
+        video.play().catch(console.error);
+      }
+      // For replay mode, don't auto-play - let the replay button handle it
+    };
+
+    const handlePlay = () => {
+      if (playbackMode === 'navigation-return') {
+        console.log('Navigation return - allowing short video to play');
+        // Allow short video to play normally
+      } else if (playbackMode === 'replay') {
+        console.log('Replay mode - allowing video to play');
+        // Allow replay to play normally
+      } else if (playbackMode === 'initial') {
+        console.log('Initial mode - allowing video to play');
+        // Allow initial play
+      } else {
+        console.log('Unexpected play event - pausing video');
+        video.pause();
       }
     };
 
@@ -60,6 +119,7 @@ const VideoLanding: React.FC = () => {
       
       if (playbackMode === 'navigation-return') {
         // For navigation returns, content and navigation are already visible
+        // Video is static, so no need to handle time updates
         return;
       }
 
@@ -74,32 +134,45 @@ const VideoLanding: React.FC = () => {
 
     const handleVideoEnd = () => {
       setHasVideoEnded(true);
+      // Mark that video has played once
+      sessionStorage.setItem('hasVideoPlayedOnce', 'true');
       // Ensure content is shown when video ends
       setShowContent(true);
       setShowNavigation(true);
     };
 
     video.addEventListener('loadeddata', handleLoadedData);
+    video.addEventListener('play', handlePlay);
     video.addEventListener('timeupdate', handleTimeUpdate);
     video.addEventListener('ended', handleVideoEnd);
     
     return () => {
       video.removeEventListener('loadeddata', handleLoadedData);
+      video.removeEventListener('play', handlePlay);
       video.removeEventListener('timeupdate', handleTimeUpdate);
       video.removeEventListener('ended', handleVideoEnd);
     };
   }, [showContent, showNavigation, playbackMode]);
 
+  // No aggressive video control needed - let it play from 75%
+
+  console.log('Rendering with playbackMode:', playbackMode);
+  
   return (
     <div className="relative min-h-screen w-full overflow-hidden bg-black">
       {/* Video Background - MOBILE OPTIMIZED */}
       <video
         ref={videoRef}
-        src={heroVideo}
-        autoPlay
+        src={playbackMode === 'navigation-return' ? heroVideoShort : heroVideo}
+        autoPlay={false}
         muted
         playsInline
         preload="metadata"
+        controls={false}
+        loop={false}
+        onLoadStart={() => {
+          console.log('Video loading with src:', playbackMode === 'navigation-return' ? 'SHORT VIDEO' : 'FULL VIDEO');
+        }}
         className="absolute inset-0 w-full h-full object-cover"
         style={{
           WebkitTransform: 'translateZ(0)',
