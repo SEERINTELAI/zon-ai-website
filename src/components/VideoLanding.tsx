@@ -20,28 +20,29 @@ const VideoLanding: React.FC = () => {
     const isDirectNavigation = sessionStorage.getItem('isDirectNavigation');
     
     if (hasVisited && isDirectNavigation) {
-      // This is a return visit - let video control both navigation and text fade
+      // This is a return visit - show content immediately and start video at last 4 seconds
       setIsReturnVisit(true);
+      setShowContent(true);
+      setShowNavigation(true);
       setIsVideoLoaded(true);
       
-      // Start video at 75% through (much shorter) - FORCE DEPLOY
+      // Start video at last 4 seconds
       const video = videoRef.current;
       if (video) {
         video.addEventListener('loadedmetadata', () => {
-          console.log('Setting video to 75%:', video.duration * 0.75);
-          video.currentTime = video.duration * 0.75; // Return visit starts at 75%
+          const duration = video.duration;
+          const startTime = Math.max(0, duration - 4);
+          video.currentTime = startTime;
         });
       }
-      
-      // Don't set showContent or showNavigation immediately - let video timing control both
     } else {
-      // First visit - check if mobile and show content immediately
+      // First visit - normal behavior
       const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
       
       if (isMobile) {
-        // Mobile - let video timing control both navigation and content fade-in
+        // Mobile - show navigation immediately, let video control text fade
+        setShowNavigation(true);
         setIsVideoLoaded(true);
-        // Don't set showContent or showNavigation immediately - let video timing control both
       } else {
         // Desktop - normal behavior with 3-second fallback
         const fallback = setTimeout(() => {
