@@ -92,14 +92,21 @@ const VideoLanding: React.FC = () => {
 
   return (
     <div className="relative min-h-screen w-full overflow-hidden bg-black">
-      {/* Video Background */}
+      {/* Video Background - MOBILE OPTIMIZED */}
       <video
         ref={videoRef}
         src={heroVideo}
         autoPlay
         muted
         playsInline
+        preload="metadata"
         className="absolute inset-0 w-full h-full object-cover"
+        style={{
+          WebkitTransform: 'translateZ(0)',
+          transform: 'translateZ(0)',
+          backfaceVisibility: 'hidden',
+          perspective: '1000px'
+        }}
         onError={() => {
           setVideoError(true);
           setIsVideoLoaded(true);
@@ -121,13 +128,12 @@ const VideoLanding: React.FC = () => {
       )}
       {/* Content Overlay - SIMPLE POSITIONING */}
       <div className="relative z-40 min-h-screen px-6 text-center text-white pt-32">
-        {/* Main Content - AI-SEXY MAGNETIC REVEAL WITH ZON GOLD */}
+        {/* Main Content - MOBILE OPTIMIZED */}
         <div className={`transition-all duration-[3000ms] ease-in-out ${
           showContent 
-            ? 'opacity-100 scale-100 blur-0' 
-            : 'opacity-0 scale-95 blur-sm'
+            ? 'opacity-100 scale-100' 
+            : 'opacity-0 scale-95'
         }`} style={{
-          filter: showContent ? 'drop-shadow(0 0 30px rgba(255, 192, 107, 0.6)) drop-shadow(0 0 60px rgba(255, 192, 107, 0.3))' : 'none',
           transition: playbackMode === 'replay' && !showContent ? 'none' : 'all 3000ms ease-in-out'
         }}>
           
