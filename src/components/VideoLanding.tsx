@@ -26,15 +26,15 @@ const VideoLanding: React.FC = () => {
       setShowNavigation(true);
       setIsVideoLoaded(true);
       
-      // Start video at last 4 seconds
-      const video = videoRef.current;
-      if (video) {
-        video.addEventListener('loadedmetadata', () => {
-          const duration = video.duration;
-          const startTime = Math.max(0, duration - 4);
-          video.currentTime = startTime;
-        });
-      }
+        // Start video at last 4 seconds - NETLIFY TEST
+        const video = videoRef.current;
+        if (video) {
+          video.addEventListener('loadedmetadata', () => {
+            const duration = video.duration;
+            const startTime = Math.max(0, duration - 4);
+            video.currentTime = startTime;
+          });
+        }
     } else {
       // First visit - normal behavior
       const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
