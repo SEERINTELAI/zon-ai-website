@@ -19,6 +19,8 @@ const VideoLanding: React.FC = () => {
     const hasVisited = sessionStorage.getItem('hasVisitedHome');
     const isDirectNavigation = sessionStorage.getItem('isDirectNavigation');
     
+    console.log('🔍 Session check:', { hasVisited, isDirectNavigation });
+    
     if (hasVisited && isDirectNavigation) {
       // This is a return visit - show content immediately and start video at last 4 seconds
       console.log('🎯 RETURN VISIT DETECTED - Starting video at last 4 seconds');
@@ -26,16 +28,6 @@ const VideoLanding: React.FC = () => {
       setShowContent(true);
       setShowNavigation(true);
       setIsVideoLoaded(true);
-      
-        // Start video at last 4 seconds - FORCE NETLIFY REBUILD
-        const video = videoRef.current;
-        if (video) {
-          video.addEventListener('loadedmetadata', () => {
-            const duration = video.duration;
-            const startTime = Math.max(0, duration - 4);
-            video.currentTime = startTime;
-          });
-        }
     } else {
       // First visit - normal behavior
       const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -58,15 +50,28 @@ const VideoLanding: React.FC = () => {
     
     // Mark that we've visited home
     sessionStorage.setItem('hasVisitedHome', 'true');
-    // Clear the direct navigation flag
+    // Clear the direct navigation flag AFTER we've used it
     sessionStorage.removeItem('isDirectNavigation');
   }, []);
 
-  // Simple video handling
+  // Video handling with return visit support
   useEffect(() => {
     const video = videoRef.current;
-    console.log('Video ref:', video);
+    console.log('Video ref:', video, 'isReturnVisit:', isReturnVisit);
+    
     if (video) {
+      const handleLoadedMetadata = () => {
+        console.log('Video metadata loaded, duration:', video.duration);
+        
+        // If this is a return visit, start video at last 4 seconds
+        if (isReturnVisit) {
+          const duration = video.duration;
+          const startTime = Math.max(0, duration - 4);
+          console.log('🎬 Setting video to start at:', startTime, 'seconds');
+          video.currentTime = startTime;
+        }
+      };
+
       const handleLoadedData = () => {
         console.log('Video loaded successfully');
         setIsVideoLoaded(true);
@@ -82,7 +87,8 @@ const VideoLanding: React.FC = () => {
         const duration = video.duration;
         const currentTime = video.currentTime;
 
-        if (currentTime >= duration * 0.35 && !showContent && !showNavigation) {
+        // For return visits, content is already shown, so skip this logic
+        if (!isReturnVisit && currentTime >= duration * 0.35 && !showContent && !showNavigation) {
           setShowContent(true);
           setShowNavigation(true);
         }
@@ -94,17 +100,19 @@ const VideoLanding: React.FC = () => {
         setShowNavigation(true);
       };
 
+      video.addEventListener('loadedmetadata', handleLoadedMetadata);
       video.addEventListener('loadeddata', handleLoadedData);
       video.addEventListener('timeupdate', handleTimeUpdate);
       video.addEventListener('ended', handleVideoEnd);
       
       return () => {
+        video.removeEventListener('loadedmetadata', handleLoadedMetadata);
         video.removeEventListener('loadeddata', handleLoadedData);
         video.removeEventListener('timeupdate', handleTimeUpdate);
         video.removeEventListener('ended', handleVideoEnd);
       };
     }
-  }, [showContent, showNavigation]);
+  }, [showContent, showNavigation, isReturnVisit]);
 
   // No aggressive video control needed - let it play from 75%
 
