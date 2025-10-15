@@ -32,13 +32,10 @@ const About: React.FC = () => {
                 <h2 className="text-3xl font-bold">Our Mission</h2>
               </div>
               <p className="text-lg text-gray-300 leading-relaxed">
-                The world stands at the brink of an energy crisis driven by the explosive growth of artificial intelligence. At ZON, we don't just adapt to this reality—we transform it. Through revolutionary, energy-efficient AI technology, we're redefining how intelligence is powered, delivered, and sustained.
+                At ZON, we stand at the forefront of innovation, bridging the gap between artificial intelligence, energy efficiency, and computational excellence that redefine what's possible.
               </p>
               <p className="text-lg text-gray-300 leading-relaxed">
-                We're committed to transforming the very foundation of AI—turning inefficiency into innovation and crisis into breakthrough. Our intelligent systems drastically reduce energy consumption while maintaining peak performance and reliability, empowering organizations to operate smarter, cleaner, and faster than ever before.
-              </p>
-              <p className="text-lg text-gray-300 leading-relaxed">
-                The future of AI can't afford waste. ZON is where sustainability meets performance—transforming energy into possibility.
+                ZON technologies are designed for enterprise-scale deployment, delivering unprecedented performance while dramatically reducing environmental impact. ZON creates tools that not only solve today's greatest industry challenges but also anticipate tomorrow's needs.
               </p>
             </div>
 
