@@ -26,10 +26,18 @@ const VideoLanding: React.FC = () => {
     return isDirectNavigation && hasBeenHereBefore && hasVideoPlayedOnce;
   });
   const [hasVideoEnded, setHasVideoEnded] = useState(false);
-  const [showMobilePlayButton, setShowMobilePlayButton] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  // Initialize state based on session storage immediately
+  // Initialize state based on session storage immediately (desktop only for navigation-return)
   const [playbackMode, setPlaybackMode] = useState<PlaybackMode>(() => {
+    // Always use initial mode on mobile
+    const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
+    const isMobileDevice = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent.toLowerCase());
+    
+    if (isMobileDevice) {
+      return 'initial'; // Always initial on mobile
+    }
+    
+    // Desktop logic for navigation-return
     const isDirectNavigation = sessionStorage.getItem('isDirectNavigation') === 'true';
     const hasBeenHereBefore = sessionStorage.getItem('hasVisitedHome') === 'true';
     const hasVideoPlayedOnce = sessionStorage.getItem('hasVideoPlayedOnce') === 'true';
@@ -40,8 +48,17 @@ const VideoLanding: React.FC = () => {
     return 'initial';
   });
   
-  // Separate state for video source to force re-render
+  // Separate state for video source to force re-render (desktop only)
   const [videoSource, setVideoSource] = useState(() => {
+    // Always use full video on mobile
+    const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
+    const isMobileDevice = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent.toLowerCase());
+    
+    if (isMobileDevice) {
+      return heroVideo; // Always full video on mobile
+    }
+    
+    // Desktop logic for short video
     const isDirectNavigation = sessionStorage.getItem('isDirectNavigation') === 'true';
     const hasBeenHereBefore = sessionStorage.getItem('hasVisitedHome') === 'true';
     const hasVideoPlayedOnce = sessionStorage.getItem('hasVideoPlayedOnce') === 'true';
@@ -107,7 +124,6 @@ const VideoLanding: React.FC = () => {
             console.log('Mobile timeout - forcing content to show');
             setShowContent(true);
             setShowNavigation(true);
-            setShowMobilePlayButton(true);
           }
         }, 3000);
       }
@@ -128,9 +144,8 @@ const VideoLanding: React.FC = () => {
           // For navigation returns, play the short video from the beginning
           console.log('Navigation return - playing short video');
           video.play().catch((error) => {
-            console.log('Video play failed, showing mobile play button:', error);
-            // If autoplay fails, show a play button for mobile
-            setShowMobilePlayButton(true);
+            console.log('Video play failed:', error);
+            // If autoplay fails, just show content
             setShowContent(true);
             setShowNavigation(true);
           });
@@ -138,9 +153,8 @@ const VideoLanding: React.FC = () => {
           // For initial visits, start playing from the beginning
           console.log('Initial visit - starting video playback');
           video.play().catch((error) => {
-            console.log('Video play failed, showing mobile play button:', error);
-            // If autoplay fails, show a play button for mobile
-            setShowMobilePlayButton(true);
+            console.log('Video play failed:', error);
+            // If autoplay fails, just show content
             setShowContent(true);
             setShowNavigation(true);
           });
@@ -149,9 +163,8 @@ const VideoLanding: React.FC = () => {
           console.log('Replay mode - starting video playback');
           video.currentTime = 0;
           video.play().catch((error) => {
-            console.log('Video play failed, showing mobile play button:', error);
-            // If autoplay fails, show a play button for mobile
-            setShowMobilePlayButton(true);
+            console.log('Video play failed:', error);
+            // If autoplay fails, just show content
             setShowContent(true);
             setShowNavigation(true);
           });
@@ -363,23 +376,6 @@ const VideoLanding: React.FC = () => {
 
         {/* Logo reveal removed - using single logo in content */}
 
-        {/* Mobile play button when autoplay fails */}
-        {showMobilePlayButton && (
-          <div className="absolute inset-0 flex items-center justify-center z-30">
-            <button 
-              onClick={() => {
-                const video = videoRef.current;
-                if (video) {
-                  setShowMobilePlayButton(false);
-                  video.play().catch(console.error);
-                }
-              }}
-              className="bg-white/20 backdrop-blur-lg text-white px-8 py-4 rounded-full font-semibold hover:bg-white/30 transition-all duration-300 flex items-center gap-3 text-lg"
-            >
-              ▶ Play Video
-            </button>
-          </div>
-        )}
 
         {/* Video replay prompt when video has ended */}
         {hasVideoEnded && (
