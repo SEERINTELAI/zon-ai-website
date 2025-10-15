@@ -2,132 +2,42 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Navbar } from './layout/Navbar';
 import heroVideo from '../assets/hero-video.mp4';
-import heroVideoShort from '../assets/hero-video-short.mp4';
 import logoTransparent from '../assets/logo-transparent.png';
 
-type PlaybackMode = 'initial' | 'replay' | 'navigation-return';
+type PlaybackMode = 'initial' | 'replay';
 
 const VideoLanding: React.FC = () => {
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   const [videoError, setVideoError] = useState(false);
-  const [showContent, setShowContent] = useState(() => {
-    const isDirectNavigation = sessionStorage.getItem('isDirectNavigation') === 'true';
-    const hasBeenHereBefore = sessionStorage.getItem('hasVisitedHome') === 'true';
-    const hasVideoPlayedOnce = sessionStorage.getItem('hasVideoPlayedOnce') === 'true';
-    
-    return isDirectNavigation && hasBeenHereBefore && hasVideoPlayedOnce;
-  });
-  
-  const [showNavigation, setShowNavigation] = useState(() => {
-    const isDirectNavigation = sessionStorage.getItem('isDirectNavigation') === 'true';
-    const hasBeenHereBefore = sessionStorage.getItem('hasVisitedHome') === 'true';
-    const hasVideoPlayedOnce = sessionStorage.getItem('hasVideoPlayedOnce') === 'true';
-    
-    return isDirectNavigation && hasBeenHereBefore && hasVideoPlayedOnce;
-  });
+  const [showContent, setShowContent] = useState(false);
+  const [showNavigation, setShowNavigation] = useState(false);
   const [hasVideoEnded, setHasVideoEnded] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  // Initialize state based on session storage immediately (desktop only for navigation-return)
-  const [playbackMode, setPlaybackMode] = useState<PlaybackMode>(() => {
-    // Always use initial mode on mobile
-    const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
-    const isMobileDevice = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent.toLowerCase());
-    
-    if (isMobileDevice) {
-      return 'initial'; // Always initial on mobile
-    }
-    
-    // Desktop logic for navigation-return
-    const isDirectNavigation = sessionStorage.getItem('isDirectNavigation') === 'true';
-    const hasBeenHereBefore = sessionStorage.getItem('hasVisitedHome') === 'true';
-    const hasVideoPlayedOnce = sessionStorage.getItem('hasVideoPlayedOnce') === 'true';
-    
-    if (isDirectNavigation && hasBeenHereBefore && hasVideoPlayedOnce) {
-      return 'navigation-return';
-    }
-    return 'initial';
-  });
-  
-  // Separate state for video source to force re-render (desktop only)
-  const [videoSource, setVideoSource] = useState(() => {
-    // Always use full video on mobile
-    const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
-    const isMobileDevice = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent.toLowerCase());
-    
-    if (isMobileDevice) {
-      return heroVideo; // Always full video on mobile
-    }
-    
-    // Desktop logic for short video
-    const isDirectNavigation = sessionStorage.getItem('isDirectNavigation') === 'true';
-    const hasBeenHereBefore = sessionStorage.getItem('hasVisitedHome') === 'true';
-    const hasVideoPlayedOnce = sessionStorage.getItem('hasVideoPlayedOnce') === 'true';
-    
-    if (isDirectNavigation && hasBeenHereBefore && hasVideoPlayedOnce) {
-      return heroVideoShort;
-    }
-    return heroVideo;
-  });
-  
-  const [isNavigationReturn, setIsNavigationReturn] = useState(() => {
-    const isDirectNavigation = sessionStorage.getItem('isDirectNavigation') === 'true';
-    const hasBeenHereBefore = sessionStorage.getItem('hasVisitedHome') === 'true';
-    const hasVideoPlayedOnce = sessionStorage.getItem('hasVideoPlayedOnce') === 'true';
-    
-    return isDirectNavigation && hasBeenHereBefore && hasVideoPlayedOnce;
-  });
+  const [playbackMode, setPlaybackMode] = useState<PlaybackMode>('initial');
+  const [isReturnVisit, setIsReturnVisit] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const location = useLocation();
 
-  // Detect mobile and navigation context on component mount
+  // Detect if this is a return visit to show content immediately
   useEffect(() => {
-    // Detect mobile device
-    const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
-    const isMobileDevice = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent.toLowerCase());
-    setIsMobile(isMobileDevice);
-    
     const isDirectNavigation = sessionStorage.getItem('isDirectNavigation') === 'true';
     const hasBeenHereBefore = sessionStorage.getItem('hasVisitedHome') === 'true';
-    const hasVideoPlayedOnce = sessionStorage.getItem('hasVideoPlayedOnce') === 'true';
-    
-    console.log('Navigation detection:', {
-      isDirectNavigation,
-      hasBeenHereBefore,
-      hasVideoPlayedOnce,
-      isMobileDevice
-    });
     
     // Clear the navigation flag immediately
     sessionStorage.removeItem('isDirectNavigation');
     
-    if (isDirectNavigation && hasBeenHereBefore && hasVideoPlayedOnce) {
-      console.log('Setting playback mode to navigation-return');
-      setPlaybackMode('navigation-return');
-      setIsNavigationReturn(true);
-      // Immediately show content and navigation for navigation returns
+    if (isDirectNavigation && hasBeenHereBefore) {
+      // Return visit - show content and navigation immediately
+      console.log('Return visit - showing content immediately');
       setShowContent(true);
       setShowNavigation(true);
+      setIsReturnVisit(true);
     } else {
-      console.log('Setting playback mode to initial');
-      setPlaybackMode('initial');
-      sessionStorage.setItem('hasVisitedHome', 'true');
-      
-      // On mobile, show content immediately to prevent loading spinner
-      if (isMobileDevice) {
-        console.log('Mobile device detected - showing content immediately');
-        setShowContent(true);
-        setShowNavigation(true);
-        
-        // Also set a timeout to ensure content shows even if video fails
-        setTimeout(() => {
-          if (!isVideoLoaded) {
-            console.log('Mobile timeout - forcing content to show');
-            setShowContent(true);
-            setShowNavigation(true);
-          }
-        }, 3000);
-      }
+      // First visit - wait for video
+      console.log('First visit - waiting for video');
+      setIsReturnVisit(false);
     }
+    
+    sessionStorage.setItem('hasVisitedHome', 'true');
   }, []);
 
   // Handle video timing for animations and end state
@@ -138,45 +48,40 @@ const VideoLanding: React.FC = () => {
     const handleLoadedData = () => {
       setIsVideoLoaded(true);
       
-      // Add a small delay for mobile devices
-      setTimeout(() => {
-        if (playbackMode === 'navigation-return') {
-          // For navigation returns, play the short video from the beginning
-          console.log('Navigation return - playing short video');
-          video.play().catch((error) => {
-            console.log('Video play failed:', error);
-            // If autoplay fails, just show content
-            setShowContent(true);
-            setShowNavigation(true);
-          });
-        } else if (playbackMode === 'initial') {
-          // For initial visits, start playing from the beginning
-          console.log('Initial visit - starting video playback');
-          video.play().catch((error) => {
-            console.log('Video play failed:', error);
-            // If autoplay fails, just show content
-            setShowContent(true);
-            setShowNavigation(true);
-          });
-        } else if (playbackMode === 'replay') {
-          // For replay mode, start playing immediately
-          console.log('Replay mode - starting video playback');
-          video.currentTime = 0;
-          video.play().catch((error) => {
-            console.log('Video play failed:', error);
-            // If autoplay fails, just show content
-            setShowContent(true);
-            setShowNavigation(true);
-          });
+      if (playbackMode === 'replay') {
+        // For replay mode, start playing immediately
+        console.log('Replay mode - starting video playback');
+        video.currentTime = 0;
+        video.play().catch((error) => {
+          console.log('Video play failed:', error);
+          setShowContent(true);
+          setShowNavigation(true);
+        });
+      } else if (isReturnVisit) {
+        // For return visits, start at halfway point
+        console.log('Return visit - starting video at halfway point');
+        const duration = video.duration;
+        if (duration && duration > 0) {
+          video.currentTime = duration / 2; // Start at 50%
         }
-      }, 100);
+        video.play().catch((error) => {
+          console.log('Video play failed:', error);
+          setShowContent(true);
+          setShowNavigation(true);
+        });
+      } else {
+        // For initial visits, start playing from the beginning
+        console.log('Initial visit - starting video playback');
+        video.play().catch((error) => {
+          console.log('Video play failed:', error);
+          setShowContent(true);
+          setShowNavigation(true);
+        });
+      }
     };
 
     const handlePlay = () => {
-      if (playbackMode === 'navigation-return') {
-        console.log('Navigation return - allowing short video to play');
-        // Allow short video to play normally
-      } else if (playbackMode === 'replay') {
+      if (playbackMode === 'replay') {
         console.log('Replay mode - allowing video to play');
         // Allow replay to play normally
       } else if (playbackMode === 'initial') {
@@ -191,12 +96,6 @@ const VideoLanding: React.FC = () => {
     const handleTimeUpdate = () => {
       const duration = video.duration;
       const currentTime = video.currentTime;
-      
-      if (playbackMode === 'navigation-return') {
-        // For navigation returns, content and navigation are already visible
-        // Video is static, so no need to handle time updates
-        return;
-      }
 
       if (currentTime >= duration * 0.35 && !showContent) {
         setShowContent(true);
@@ -231,33 +130,22 @@ const VideoLanding: React.FC = () => {
 
   // No aggressive video control needed - let it play from 75%
 
-  console.log('Rendering with playbackMode:', playbackMode);
-  
   return (
     <div className="relative min-h-screen w-full overflow-hidden bg-black">
-      {/* Video Background - MOBILE OPTIMIZED */}
+      {/* Video Background */}
       <video
-        key={videoSource} // Force re-render when video source changes
         ref={videoRef}
-        src={videoSource}
+        src={heroVideo}
         autoPlay={false}
         muted
         playsInline
-        preload={isMobile ? "none" : "auto"}
+        preload="metadata"
         controls={false}
         loop={false}
-        webkit-playsinline="true"
-        x5-playsinline="true"
-        x5-video-player-type="h5"
-        x5-video-player-fullscreen="false"
-        onLoadStart={() => {
-          console.log('Video loading with src:', videoSource === heroVideoShort ? 'SHORT VIDEO' : 'FULL VIDEO');
-        }}
-        onLoadedData={() => {
-          console.log('Video loaded successfully, playbackMode:', playbackMode);
-        }}
         onError={(e) => {
           console.error('Video error:', e);
+          setVideoError(true);
+          setIsVideoLoaded(true);
         }}
         className="absolute inset-0 w-full h-full object-cover"
         style={{
@@ -265,10 +153,6 @@ const VideoLanding: React.FC = () => {
           transform: 'translateZ(0)',
           backfaceVisibility: 'hidden',
           perspective: '1000px'
-        }}
-        onError={() => {
-          setVideoError(true);
-          setIsVideoLoaded(true);
         }}
       />
       {/* Background Fallback for Video Errors */}
@@ -382,17 +266,20 @@ const VideoLanding: React.FC = () => {
           <div className="absolute top-20 left-6">
             <button 
               onClick={() => {
-                console.log('Replay button clicked - replaying original full video');
+                console.log('Replay button clicked - replaying video');
                 
                 // Immediately hide text with no transition
                 setShowContent(false);
                 setHasVideoEnded(false);
                 setShowNavigation(false);
                 setPlaybackMode('replay');
-                setIsNavigationReturn(false);
                 
-                // Always replay the original full video
-                setVideoSource(heroVideo);
+                // Reset video and play
+                const video = videoRef.current;
+                if (video) {
+                  video.currentTime = 0;
+                  video.play();
+                }
               }}
               className="bg-white/20 backdrop-blur-lg text-white px-4 py-2 md:px-6 md:py-3 rounded-full font-semibold hover:bg-white/30 transition-all duration-300 flex items-center gap-2 animate-pulse-glow animate-gentle-bounce text-sm md:text-base"
             >
