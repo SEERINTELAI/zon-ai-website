@@ -182,7 +182,7 @@ const VideoLanding: React.FC = () => {
               }}>ENERGY REDUCTION</div>
             </div>
             <div className="text-center">
-              <div className="font-bold text-[#FF6826] mb-3" style={{
+              <div className="font-bold text-[#FFC06B] mb-3" style={{
                 fontSize: 'clamp(1.5rem, 4.5vw, 2.75rem)',
                 lineHeight: '1.1',
                 textShadow: '0 1px 2px rgba(0, 0, 0, 0.3)'
@@ -194,7 +194,7 @@ const VideoLanding: React.FC = () => {
               }}>COST SAVINGS</div>
             </div>
             <div className="text-center">
-              <div className="font-bold text-[#FF6826] mb-3" style={{
+              <div className="font-bold text-[#CB2F19] mb-3" style={{
                 fontSize: 'clamp(1.5rem, 4.5vw, 2.75rem)',
                 lineHeight: '1.1',
                 textShadow: '0 1px 2px rgba(0, 0, 0, 0.3)'
