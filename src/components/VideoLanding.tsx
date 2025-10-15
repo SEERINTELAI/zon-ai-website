@@ -26,7 +26,7 @@ const VideoLanding: React.FC = () => {
       setShowNavigation(true);
       setIsVideoLoaded(true);
       
-        // Start video at last 4 seconds - NETLIFY TEST
+        // Start video at last 4 seconds - FORCE NETLIFY REBUILD
         const video = videoRef.current;
         if (video) {
           video.addEventListener('loadedmetadata', () => {
