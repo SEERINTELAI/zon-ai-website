@@ -190,7 +190,7 @@ const VideoLanding: React.FC = () => {
             lineHeight: '1.2',
             wordSpacing: '0.1em'
           }}>
-            ZON builds AI that makes AI better
+            ZON builds AI that makes AI better - TESTING GIT DEPLOYMENT
           </h1>
 
           {/* Logo - FIXED POSITION */}
@@ -214,7 +214,7 @@ const VideoLanding: React.FC = () => {
             lineHeight: '1.6',
             padding: '0 1rem'
           }}>
-            Revolutionary AI technology that transforms how businesses operate, optimize, and scale.
+            Revolutionary AI technology that transforms how businesses operate, optimize, and scale. 🚀 GIT TEST SUCCESSFUL! 🚀
           </p>
 
           {/* Statistics - FIXED POSITION */}
@@ -224,12 +224,12 @@ const VideoLanding: React.FC = () => {
                 fontSize: 'clamp(1.5rem, 4.5vw, 2.75rem)',
                 lineHeight: '1.1',
                 textShadow: '0 1px 2px rgba(0, 0, 0, 0.3)'
-              }}>35%+</div>
+              }}>99%+</div>
               <div className="text-white uppercase tracking-wider font-medium" style={{
                 fontSize: 'clamp(0.7rem, 1.4vw, 0.95rem)',
                 lineHeight: '1.3',
                 textShadow: '0 1px 1px rgba(0, 0, 0, 0.3)'
-              }}>ENERGY REDUCTION</div>
+              }}>GIT DEPLOYMENT SUCCESS</div>
             </div>
             <div className="text-center">
               <div className="font-bold text-[#FFC06B] mb-3" style={{
