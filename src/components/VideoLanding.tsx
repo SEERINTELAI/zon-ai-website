@@ -22,20 +22,19 @@ const VideoLanding: React.FC = () => {
     const urlParams = new URLSearchParams(window.location.search);
     const urlReturnVisit = urlParams.get('return');
     
-    console.log('🔍 Session check:', { hasVisited, isDirectNavigation, returnVisitFlag, urlReturnVisit });
-    console.log('🔍 Current URL:', window.location.href);
-    console.log('🔍 Referrer:', document.referrer);
-    console.log('🔍 All sessionStorage:', Object.keys(sessionStorage).reduce((acc, key) => {
-      acc[key] = sessionStorage.getItem(key);
-      return acc;
-    }, {} as Record<string, string | null>));
+    // Debug logging for return visit detection
+    if (process.env.NODE_ENV === 'development') {
+      console.log('🔍 Session check:', { hasVisited, isDirectNavigation, returnVisitFlag, urlReturnVisit });
+    }
     
     // More robust return visit detection with multiple fallbacks
     const isReturnVisit = hasVisited && (isDirectNavigation || returnVisitFlag || urlReturnVisit === 'true');
     
     if (isReturnVisit) {
       // This is a return visit - show content immediately and start video at last 4 seconds
-      console.log('🎯 RETURN VISIT DETECTED - Starting video at last 4 seconds');
+      if (process.env.NODE_ENV === 'development') {
+        console.log('🎯 RETURN VISIT DETECTED - Starting video at last 4 seconds');
+      }
       setIsReturnVisit(true);
       setShowContent(true);
       setShowNavigation(true);
@@ -53,7 +52,9 @@ const VideoLanding: React.FC = () => {
       }
     } else {
       // First visit - normal behavior
-      console.log('🆕 FIRST VISIT - Normal video behavior');
+      if (process.env.NODE_ENV === 'development') {
+        console.log('🆕 FIRST VISIT - Normal video behavior');
+      }
       const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
       
       if (isMobile) {
@@ -79,17 +80,23 @@ const VideoLanding: React.FC = () => {
   // Video handling with return visit support
   useEffect(() => {
     const video = videoRef.current;
-    console.log('Video ref:', video, 'isReturnVisit:', isReturnVisit);
+    if (process.env.NODE_ENV === 'development') {
+      console.log('Video ref:', video, 'isReturnVisit:', isReturnVisit);
+    }
     
     if (video) {
       const handleLoadedMetadata = () => {
-        console.log('Video metadata loaded, duration:', video.duration);
+        if (process.env.NODE_ENV === 'development') {
+          console.log('Video metadata loaded, duration:', video.duration);
+        }
         
         // If this is a return visit, start video at last 4 seconds
         if (isReturnVisit) {
           const duration = video.duration;
           const startTime = Math.max(0, duration - 4);
-          console.log('🎬 Setting video to start at:', startTime, 'seconds');
+          if (process.env.NODE_ENV === 'development') {
+            console.log('🎬 Setting video to start at:', startTime, 'seconds');
+          }
           video.currentTime = startTime;
         }
       };
@@ -190,7 +197,7 @@ const VideoLanding: React.FC = () => {
             lineHeight: '1.2',
             wordSpacing: '0.1em'
           }}>
-            ZON builds AI that makes AI better - TESTING GIT DEPLOYMENT
+            ZON builds AI that makes AI better
           </h1>
 
           {/* Logo - FIXED POSITION */}
@@ -214,7 +221,7 @@ const VideoLanding: React.FC = () => {
             lineHeight: '1.6',
             padding: '0 1rem'
           }}>
-            Revolutionary AI technology that transforms how businesses operate, optimize, and scale. 🚀 GIT TEST SUCCESSFUL! 🚀
+            Revolutionary AI technology that transforms how businesses operate, optimize, and scale.
           </p>
 
           {/* Statistics - FIXED POSITION */}
@@ -224,12 +231,12 @@ const VideoLanding: React.FC = () => {
                 fontSize: 'clamp(1.5rem, 4.5vw, 2.75rem)',
                 lineHeight: '1.1',
                 textShadow: '0 1px 2px rgba(0, 0, 0, 0.3)'
-              }}>99%+</div>
+              }}>35%+</div>
               <div className="text-white uppercase tracking-wider font-medium" style={{
                 fontSize: 'clamp(0.7rem, 1.4vw, 0.95rem)',
                 lineHeight: '1.3',
                 textShadow: '0 1px 1px rgba(0, 0, 0, 0.3)'
-              }}>GIT DEPLOYMENT SUCCESS</div>
+              }}>ENERGY REDUCTION</div>
             </div>
             <div className="text-center">
               <div className="font-bold text-[#FFC06B] mb-3" style={{

@@ -58,7 +58,9 @@ export const Navbar: React.FC = () => {
         <div className="flex items-center justify-center h-16 relative">
           {/* Logo - Left */}
           <Link to="/?return=true" onClick={() => {
-            console.log('🏠 Logo clicked - setting return visit flag');
+            if (process.env.NODE_ENV === 'development') {
+              console.log('🏠 Logo clicked - setting return visit flag');
+            }
             sessionStorage.setItem('isDirectNavigation', 'true');
             sessionStorage.setItem('returnVisit', 'true');
           }} className="absolute left-0 flex items-center">
@@ -68,7 +70,9 @@ export const Navbar: React.FC = () => {
                  {/* Desktop Navigation - Center */}
                  <div className="hidden md:flex items-center space-x-8">
                    <Link to="/?return=true" onClick={() => {
-                     console.log('🏠 Home link clicked - setting return visit flag');
+                     if (process.env.NODE_ENV === 'development') {
+                       console.log('🏠 Home link clicked - setting return visit flag');
+                     }
                      sessionStorage.setItem('isDirectNavigation', 'true');
                      sessionStorage.setItem('returnVisit', 'true');
                      window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -161,7 +165,9 @@ export const Navbar: React.FC = () => {
           <div className="md:hidden">
                  <div className="px-2 pt-2 pb-3 space-y-1 bg-black/95 backdrop-blur-lg border-t border-gray-800">
                    <Link to="/?return=true" onClick={() => {
-                     console.log('🏠 Mobile Home clicked - setting return visit flag');
+                     if (process.env.NODE_ENV === 'development') {
+                       console.log('🏠 Mobile Home clicked - setting return visit flag');
+                     }
                      sessionStorage.setItem('isDirectNavigation', 'true');
                      sessionStorage.setItem('returnVisit', 'true');
                      handleMobileNavClick('/?return=true');
